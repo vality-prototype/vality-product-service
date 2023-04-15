@@ -1,0 +1,20 @@
+FROM golang:1.20-alpine
+
+ENV GO111MODULE 'on'
+ENV GOPROXY 'direct'
+ENV GOPRIVATE 'gitlab.com/vality-prototype/*'
+ENV GOSUMDB 'off'
+ENV IS_DEPLOYED 'true'
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN apk add gcc g++
+RUN git config --global url."https://pikachu-can-code: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@github.com/".insteadOf "https://github.com/"
+RUN go mod download
+
+COPY . .
+
+RUN go build -tags musl -a -o main .
+
+CMD ["sh", "-c", "/app/main"]

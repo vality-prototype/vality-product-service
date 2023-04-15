@@ -1,0 +1,14 @@
+FROM golang:1.20-alpine
+
+ENV GO111MODULE 'on'
+ENV GOPROXY 'direct'
+ENV GOPRIVATE 'gitlab.com/vality-prototype/*'
+ENV GOSUMDB 'off'
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN apk add gcc g++ git
+RUN git config --global url."https://pikachu-can-code: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@github.com/".insteadOf "https://github.com/"
+RUN go install github.com/onsi/ginkgo/v2/ginkgo
+RUN go mod download

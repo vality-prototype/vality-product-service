@@ -1,0 +1,97 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./infra/docker/Dockerfile.local
+    env_file: .env
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      mock-kafka:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
+  app-ut:
+    container_name: app-for-ut
+    build:
+      context: .
+      dockerfile: ./infra/docker/Dockerfile.local
+    env_file: .env-ut
+    volumes:
+      - .:/app
+    ports:
+      - 8080:8080
+    depends_on:
+      mock-kafka:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
+  mysql:
+    container_name: app-mysql
+    image: mysql:8.0.32
+    platform: linux/x86_64
+    env_file: .env
+    volumes:
+      - ./.env-ut:/etc/mysql/.env-ut
+      - ./scripts/create_db_test.sh:/etc/mysql/test/create_db_test.sh
+    ports:
+      - 3307:3306
+    healthcheck:
+      test: mysqladmin ping -h localhost -u$$MYSQL_USER -p$$MYSQL_PASSWORD && sleep 5s
+      retries: 6
+      interval: 5s
+      timeout: 30s
+
+  mock-zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: mock-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  mock-kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: mock-kafka
+    ports:
+      - '9092:9092'
+    depends_on:
+      - mock-zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'mock-zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://mock-kafka:9092,PLAINTEXT_INTERNAL://mock-kafka:29092
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_PRODUCER_MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION: 1
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: 'user:1:1,bff:1:1'
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
