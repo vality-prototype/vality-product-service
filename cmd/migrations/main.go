@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/pressly/goose"
-	"github.com/vality-prototype/vality-user-service/cmd/migrations/migrate_version"
+	"github.com/vality-prototype/vality-product-service/cmd/migrations/migrate_version"
 	_ "gorm.io/driver/mysql"
 )
 

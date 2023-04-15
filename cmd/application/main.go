@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/vality-prototype/vality-product-service/pkg/registry"
 	"github.com/vality-prototype/vality-utility-service/configs"
 	"github.com/vality-prototype/vality-utility-service/pkg"
 	"github.com/vality-prototype/vality-utility-service/pkg/s3_provider"
@@ -35,5 +36,6 @@ func main() {
 	)
 
 	appCtx := pkg.NewAppContext(db, provider, &env)
-	log.Print(appCtx)
+	r := registry.NewRegistry(appCtx)
+	r.NewAppController()
 }

@@ -1,1 +1,1 @@
-# vality-user-service
+# vality-product-service

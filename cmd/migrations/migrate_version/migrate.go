@@ -3,7 +3,7 @@ package migrate_version
 import (
 	"log"
 
-	"github.com/vality-prototype/vality-user-service/app/domains/entities/models"
+	"github.com/vality-prototype/vality-product-service/pkg/entities/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

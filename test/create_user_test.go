@@ -3,9 +3,9 @@ package test
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/vality-prototype/vality-user-service/app/domains/entities/models"
+	"github.com/vality-prototype/vality-product-service/app/domains/entities/models"
+	"github.com/vality-prototype/vality-product-service/pkg/usecases"
 	"github.com/vality-prototype/vality-user-service/app/domains/repository"
-	"github.com/vality-prototype/vality-user-service/app/usecases"
 	"github.com/vality-prototype/vality-utility-service/configs"
 	"github.com/vality-prototype/vality-utility-service/pkg"
 
@@ -16,40 +16,7 @@ import (
 
 // this is integration test
 
-// func TestCreateUser(t *testing.T) {
-// 	var (
-// 		env = configs.Init(".env-ut")
-// 		// init sql connection, this connection will keep alive until the app is closed
-// 		connStr = env.DBConnectionStr
-// 		db, err = gorm.Open(mysql.Open(connStr), &gorm.Config{})
-// 		appCtx  = pkg.NewAppContext(db, nil, &env)
-// 	)
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	// create user
-// 	user := &models.User{
-// 		Email:    "",
-// 		Password: "",
-// 	}
-// 	userRepo := repository.NewUserRepo(appCtx)
-// 	createUser := usecases.NewCreateUser(appCtx, userRepo)
-// 	userCreated, err := createUser.CreateUser(user)
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-// 	assert.Equal(t, user.Email, userCreated.Email)
-// 	assert.Equal(t, user.Password, userCreated.Password)
-// 	assert.NotEqual(t, user.ID, 0)
-
-// 	err = db.Delete(userCreated).Error
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-// }
-
-var _ = Describe("CreateUser", func() {
+var _ = Describe("CreateProd", func() {
 	var (
 		env    configs.Env
 		db     *gorm.DB
@@ -75,9 +42,9 @@ var _ = Describe("CreateUser", func() {
 			Fail(err.Error())
 		}
 	})
-	It("should create user", func() {
+	It("should create prod", func() {
 		var (
-			user = &models.User{
+			user = &models.Product{
 				Email:    "",
 				Password: "",
 			}

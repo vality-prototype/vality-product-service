@@ -1,4 +1,4 @@
-module github.com/vality-prototype/vality-user-service
+module github.com/vality-prototype/vality-product-service
 
 go 1.20
 
@@ -6,7 +6,8 @@ require (
 	github.com/onsi/ginkgo/v2 v2.9.2
 	github.com/onsi/gomega v1.27.4
 	github.com/pressly/goose v2.7.0+incompatible
-	github.com/vality-prototype/vality-utility-service v0.0.0-20230412052516-4ca0b8a7dca2
+	github.com/vality-prototype/vality-user-service v0.0.0-20230413082150-334d227b0881
+	github.com/vality-prototype/vality-utility-service v0.0.0-20230415051259-bdb40ea6c563
 	gorm.io/driver/mysql v1.5.0
 	gorm.io/gorm v1.25.0
 )
