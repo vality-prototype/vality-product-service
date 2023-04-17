@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/vality-prototype/vality-product-service/pkg/infrastructure/datastore"
+	"github.com/vality-prototype/vality-product-service/pkg/infrastructure/transport"
 	"github.com/vality-prototype/vality-product-service/pkg/registry"
 	"github.com/vality-prototype/vality-utility-service/configs"
 	"github.com/vality-prototype/vality-utility-service/pkg"
@@ -31,5 +32,5 @@ func main() {
 
 	appCtx := pkg.NewAppContext(db, provider, &env)
 	r := registry.NewRegistry(appCtx)
-	r.NewAppController()
+	transport.NewRouter(r.NewAppController())
 }
