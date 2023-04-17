@@ -1,11 +1,12 @@
 package test
 
 import (
+	"context"
+
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/vality-prototype/vality-product-service/app/domains/entities/models"
-	"github.com/vality-prototype/vality-product-service/pkg/usecases"
-	"github.com/vality-prototype/vality-user-service/app/domains/repository"
+	"github.com/vality-prototype/vality-product-service/pkg/entities/models"
+	"github.com/vality-prototype/vality-product-service/pkg/registry"
 	"github.com/vality-prototype/vality-utility-service/configs"
 	"github.com/vality-prototype/vality-utility-service/pkg"
 
@@ -44,26 +45,24 @@ var _ = Describe("CreateProd", func() {
 	})
 	It("should create prod", func() {
 		var (
-			user = &models.Product{
-				Email:    "",
-				Password: "",
+			r    = registry.NewRegistry(appCtx)
+			prod = &models.Product{
+				Name:  "Prod1",
+				Price: 1000,
 			}
-			userRepo   = repository.NewUserRepo(appCtx)
-			createUser = usecases.NewCreateUser(appCtx, userRepo)
+			appController = r.NewAppController()
 		)
-
-		userCreated, err := createUser.CreateUser(user)
+		resp, err := appController.Product.CreateProduct(context.Background(), prod)
 		if err != nil {
 			Fail(err.Error())
 		}
-		Expect(user.Email).To(Equal(userCreated.Email))
-		Expect(user.Password).To(Equal(userCreated.Password))
-		Expect(user.ID).NotTo(Equal(0))
-		// assert.Equal(t, user.Email, userCreated.Email)
-		// assert.Equal(t, user.Password, userCreated.Password)
-		// assert.NotEqual(t, user.ID, 0)
+		data, ok := resp.Data.(*models.Product)
+		Expect(ok).To(Equal(true))
+		Expect(data.Name).To(Equal(prod.Name))
+		Expect(data.Price).To(Equal(prod.Price))
+		Expect(data.ID).NotTo(Equal(0))
 
-		err = db.Delete(userCreated).Error
+		err = db.Model(data).Delete(data).Error
 		if err != nil {
 			Fail(err.Error())
 		}
