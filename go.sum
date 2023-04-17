@@ -41,8 +41,6 @@ github.com/pressly/goose v2.7.0+incompatible/go.mod h1:m+QHWCqxR3k8D9l7qfzuC/djt
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/vality-prototype/vality-user-service v0.0.0-20230413082150-334d227b0881 h1:qhBfwefpfMYPCpiCUmeqUIcTO/PHeFYPdgbo1QypH9Q=
-github.com/vality-prototype/vality-user-service v0.0.0-20230413082150-334d227b0881/go.mod h1:rFyI5yiztRI8YY1Yf1nogcb57+4XQowUZxJNLlrJwZw=
 github.com/vality-prototype/vality-utility-service v0.0.0-20230415051259-bdb40ea6c563 h1:hTp3JCrFxRDKMf4lgVvAfpqIhBNhqWoHq6fquVaKO+4=
 github.com/vality-prototype/vality-utility-service v0.0.0-20230415051259-bdb40ea6c563/go.mod h1:O3ing1vAaUjdiWqgsbsM63oc4aiGDMkGQVtnuunBxXE=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
